@@ -19,15 +19,11 @@ class FullDuplexAudio:
         self.phase = 0.0 
 
     def generate_tone(self , frequency = 440.0 , duration_frames = None):
-        """
-        Generates audio chunks and pushes them to the output_queue.
-        This should be called from a separate thread or a loop in the main thread.
-        """
+
         if not self.is_running:
             return
 
         # Calculate samples needed for one buffer chunk
-        # We want to match the buffer_size to keep latency low
         samples_to_generate = self.buffer_size 
         
         # Create time array for this chunk
@@ -47,11 +43,9 @@ class FullDuplexAudio:
         # Reshape to match (frames, channels) expected by sounddevice
         audio_chunk = audio_chunk.reshape(-1, 1)
 
-        # Put into queue (Non-blocking)
         try:
             self.output_queue.put(audio_chunk, block=False)
         except queue.Full:
-            # If we are generating faster than audio plays, drop old frames
             pass
 
     def audio_callback(self, indata , outdata , time , frames , status):
