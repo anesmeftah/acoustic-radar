@@ -117,7 +117,7 @@ acoustic_radar/
 ## Installation
 
 ```bash
-git clone https://github.com/your-username/acoustic-radar.git
+git clone https://github.com/anesmeftah/acoustic-radar.git
 cd acoustic-radar
 pip install -r requirements.txt
 ```
