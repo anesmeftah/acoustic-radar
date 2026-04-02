@@ -27,13 +27,27 @@ class SignalProcessing:
         self.freqs = np.fft.rfftfreq(self.N , d=1/self.sr)
         self.freq_mask = (self.freqs >= f_low) & (self.freqs <= f_high)
         self.selected_freqs = self.freqs[self.freq_mask]
-        
+
 
     def bandpass(self , window):
         return signal.lfilter(self.b,self.a,window)
 
     def stft(self , window):
+
+        # apply window function
         windowed = window * self.window
+
+        # compute FFT
+
+        fft_result = np.fft.rfft(windowed , n=self.N)
+        magnitude = np.abs(fft_result)
+
+        # select frequencies within the band
+        magnitude = magnitude[self.freq_mask]
+
+        #convert to dB
+        magnitude = 20 * np.log10(magnitude + 1e-6) # add small value to avoid log(0)
+        return magnitude
 
     def process_window(self , window):
         # first we need to implement the bandpass filter
