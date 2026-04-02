@@ -6,11 +6,11 @@ from audio_io.full_duplex_audio import FullDuplexAudio
 
 class SlidingWindowBuffer:
     def __init__(self , window_size = 100 , overlap = 0.5 , Hop_size = 50 , chunk_size = 512 , channels = 1):
-        self.window_size = window_size #4800 samples
+        self.window_size = window_size 
         self.hop_size = Hop_size
         self.buffer_size = 2 * self.window_size
         self.channels = channels
-
+        
         self.filled_samples = 0
 
         self.buffer = np.zeros((self.buffer_size , self.channels))
